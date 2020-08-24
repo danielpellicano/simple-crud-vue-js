@@ -8,10 +8,23 @@
   </head>
   <body>
     <div id="root">
-      <form v-on:submit.prevent>
+      <form v-on:submit.prevent="addUser">
         <input type="text" v-model="newUser" />
-        {{newUser}}
+        <input type="submit" value="cadastrar" />
       </form>
+
+      <ul>
+        <li v-for="user in users" :key="user.id">
+          <input
+            type="text"
+            v-bind:value="user.name"
+            v-on:change="setUser($event.target.value, user.id)"
+          />
+          <button class="user-delete" v-on:click="removeUser(user.id)">
+            Excluir
+          </button>
+        </li>
+      </ul>
     </div>
 
     <script>
@@ -20,6 +33,27 @@
         data: {
           users: [],
           newUser: '',
+        },
+        methods: {
+          addUser: function () {
+            this.users.push({
+              id: this.users.length + 1,
+              name: this.newUser,
+            });
+            console.log(this.users);
+          },
+          setUser(newName, id) {
+            this.users.map(user => {
+              if (user.id == id) {
+                user[name] = newName;
+              }
+            });
+          },
+          removeUser(id) {
+            this.users = this.users.filter(user => {
+              return user.id != id;
+            });
+          },
         },
       });
     </script>
